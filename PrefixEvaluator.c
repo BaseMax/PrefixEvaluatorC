@@ -69,6 +69,40 @@ int PrefixEvaluator(char* input)
 
     Stack *s = initStack(length);
 
+    for (int i = length - 1; i >= 0; i--) {
+        if (input[i] == ' ' || input[i] == '\t') {
+            continue;
+        } else if (isdigit(input[i])) {
+            push(s, input[i] - '0');
+        } else {
+            int op1 = pop(s);
+            int op2 = pop(s);
+
+            switch (input[i]) {
+                case '+':
+                    result = op1 + op2;
+                    break;
+                case '-':
+                    result = op1 - op2;
+                    break;
+                case '*':
+                    result = op1 * op2;
+                    break;
+                case '/':
+                    result = op1 / op2;
+                    break;
+                case '^':
+                    result = pow(op1, op2);
+                    break;
+            }
+
+            push(s, result);
+        }
+    }
+
+    result = pop(s);
+    free(s);
+
     return result;
 }
 
